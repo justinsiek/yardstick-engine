@@ -15,11 +15,21 @@ from engine.spec import (
     load_spec,
     SpecLoadError,
 )
+from engine.dataset import (
+    Case,
+    load_dataset_jsonl,
+    DatasetLoadError,
+)
 
 __all__ = [
     "__version__",
+    # Spec
     "BenchmarkSpec",
     "load_spec",
     "SpecLoadError",
+    # Dataset
+    "Case",
+    "load_dataset_jsonl",
+    "DatasetLoadError",
 ]
 

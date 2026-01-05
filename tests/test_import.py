@@ -27,8 +27,22 @@ def test_import_spec_module():
 def test_top_level_exports():
     """Verify public API is exported from top-level package."""
     from engine import load_spec, BenchmarkSpec, SpecLoadError
+    from engine import load_dataset_jsonl, Case, DatasetLoadError
     
     assert callable(load_spec)
     assert BenchmarkSpec is not None
     assert issubclass(SpecLoadError, Exception)
+    
+    assert callable(load_dataset_jsonl)
+    assert Case is not None
+    assert issubclass(DatasetLoadError, Exception)
+
+
+def test_import_dataset_module():
+    """Verify the dataset module can be imported."""
+    from engine import dataset
+    
+    assert callable(dataset.load_dataset_jsonl)
+    assert dataset.Case is not None
+    assert dataset.DatasetLoadError is not None
 
