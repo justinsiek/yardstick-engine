@@ -16,8 +16,6 @@ BENCHMARK = "benchmarks/addition_qa_v1/benchmark.yaml"
 # Systems to test (name -> endpoint)
 SYSTEMS = [
     SystemConfig(name="openai", endpoint="http://localhost:8001/solve"),
-    # Add more systems here:
-    # SystemConfig(name="anthropic", endpoint="http://localhost:8002/solve"),
 ]
 
 # Output file (optional)

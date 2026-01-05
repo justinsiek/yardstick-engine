@@ -31,6 +31,12 @@ dev = [
     "pytest>=7.0",
     "pytest-httpx>=0.30",
 ]
+proxy = [
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+    "openai>=1.0",
+    "python-dotenv>=1.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["engine"]
