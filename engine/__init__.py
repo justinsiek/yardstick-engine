@@ -24,6 +24,31 @@ from engine.jsonpath import (
     eval_jsonpath,
     JSONPathError,
 )
+from engine.extraction import (
+    extract_output,
+    ExtractionError,
+)
+from engine.metrics import (
+    score_exact_match,
+    MetricError,
+)
+from engine.aggregation import (
+    aggregate_mean,
+)
+from engine.systems import (
+    SystemConfig,
+    invoke_case,
+    InvokeError,
+)
+from engine.results import (
+    ErrorInfo,
+    CaseResult,
+    SystemResult,
+    RunResult,
+)
+from engine.runner import (
+    run_benchmark,
+)
 
 __all__ = [
     "__version__",
@@ -38,5 +63,23 @@ __all__ = [
     # JSONPath
     "eval_jsonpath",
     "JSONPathError",
+    # Extraction
+    "extract_output",
+    "ExtractionError",
+    # Metrics
+    "score_exact_match",
+    "MetricError",
+    # Aggregation
+    "aggregate_mean",
+    # Systems
+    "SystemConfig",
+    "invoke_case",
+    "InvokeError",
+    # Results
+    "ErrorInfo",
+    "CaseResult",
+    "SystemResult",
+    "RunResult",
+    # Runner
+    "run_benchmark",
 ]
-

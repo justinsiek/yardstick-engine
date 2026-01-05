@@ -6,7 +6,7 @@ and provides functions to load and validate specs from YAML/JSON files.
 """
 
 from pathlib import Path
-from typing import Literal, Union
+from typing import Literal
 
 import yaml
 from pydantic import BaseModel, Field, model_validator
@@ -152,7 +152,7 @@ class BenchmarkSpec(BaseModel):
     
     id: str = Field(..., description="Unique identifier for the benchmark")
     name: str = Field(..., description="Human-readable benchmark name")
-    version: Union[int, str] = Field(..., description="Benchmark version")
+    version: int | str = Field(..., description="Benchmark version")
     
     dataset: DatasetConfig
     contract: ContractConfig
@@ -168,7 +168,7 @@ class SpecLoadError(Exception):
     pass
 
 
-def load_spec(path: Union[str, Path]) -> BenchmarkSpec:
+def load_spec(path: str | Path) -> BenchmarkSpec:
     """
     Load and validate a benchmark spec from a YAML or JSON file.
     
@@ -187,7 +187,7 @@ def load_spec(path: Union[str, Path]) -> BenchmarkSpec:
         raise SpecLoadError(f"Spec file not found: {path}")
     
     try:
-        content = path.read_text()
+        content = path.read_text(encoding="utf-8")
     except Exception as e:
         raise SpecLoadError(f"Failed to read spec file: {e}") from e
     

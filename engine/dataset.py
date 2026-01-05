@@ -7,7 +7,7 @@ and validate datasets from JSONL files.
 
 import json
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -47,7 +47,7 @@ class DatasetLoadError(Exception):
     pass
 
 
-def load_dataset_jsonl(path: Union[str, Path]) -> list[Case]:
+def load_dataset_jsonl(path: str | Path) -> list[Case]:
     """
     Load and validate a dataset from a JSONL file.
     
