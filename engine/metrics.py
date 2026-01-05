@@ -30,7 +30,7 @@ class MetricError(Exception):
         super().__init__(f"{self.code}: {message}")
 
 
-def _normalize(value: Any) -> str:
+def _normalize(value: Any, strip_punctuation: bool = False) -> str:
     """
     Normalize a value for comparison.
     
@@ -38,14 +38,19 @@ def _normalize(value: Any) -> str:
     - Convert to string
     - Lowercase
     - Strip whitespace
+    - Optionally strip trailing punctuation
     
     Args:
         value: Any value to normalize
+        strip_punctuation: Whether to strip trailing punctuation (.!?,;:)
         
     Returns:
         Normalized string representation
     """
-    return str(value).lower().strip()
+    result = str(value).lower().strip()
+    if strip_punctuation:
+        result = result.rstrip(".!?,;:")
+    return result
 
 
 def score_exact_match(
@@ -53,6 +58,7 @@ def score_exact_match(
     reference: dict[str, Any],
     pred_path: str,
     ref_path: str,
+    strip_punctuation: bool = False,
 ) -> bool:
     """
     Score using exact string match after normalization.
@@ -62,12 +68,14 @@ def score_exact_match(
     - Convert to string
     - Lowercase
     - Strip whitespace
+    - Optionally strip trailing punctuation
     
     Args:
         extracted_output: The output extracted from the system response
         reference: The reference object from the case (case.reference)
         pred_path: JSONPath to extract predicted value from extracted_output
         ref_path: JSONPath to extract reference value from reference
+        strip_punctuation: Whether to strip trailing punctuation before comparison
         
     Returns:
         True if normalized values match exactly, False otherwise
@@ -102,8 +110,8 @@ def score_exact_match(
         ) from e
     
     # Normalize and compare
-    normalized_pred = _normalize(pred_value)
-    normalized_ref = _normalize(ref_value)
+    normalized_pred = _normalize(pred_value, strip_punctuation)
+    normalized_ref = _normalize(ref_value, strip_punctuation)
     
     return normalized_pred == normalized_ref
 

@@ -71,6 +71,7 @@ class NormalizeConfig(BaseModel):
     
     lowercase: Literal[True] = Field(..., description="Lowercase strings before comparison")
     strip_whitespace: Literal[True] = Field(..., description="Strip whitespace before comparison")
+    strip_punctuation: bool = Field(default=False, description="Strip trailing punctuation before comparison")
 
 
 class MetricArgs(BaseModel):

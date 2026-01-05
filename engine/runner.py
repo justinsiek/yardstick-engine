@@ -68,6 +68,7 @@ def _run_case(
     metric_config = spec.scoring.metrics[0]
     pred_path = metric_config.args.pred_path
     ref_path = metric_config.args.ref_path
+    strip_punctuation = metric_config.args.normalize.strip_punctuation
     
     try:
         exact_match = score_exact_match(
@@ -75,6 +76,7 @@ def _run_case(
             case.reference,
             pred_path,
             ref_path,
+            strip_punctuation,
         )
     except MetricError as e:
         return CaseResult(

@@ -148,6 +148,52 @@ class TestScoreExactMatch:
         
         assert exc_info.value.code == "metric_failed"
     
+    # --- Normalization: strip punctuation ---
+    
+    def test_strip_punctuation_disabled_by_default(self):
+        """Punctuation is NOT stripped by default."""
+        assert score_exact_match(
+            "Mount Everest.", {"answer": "Mount Everest"}, "$", "$.answer"
+        ) is False
+    
+    def test_strip_punctuation_enabled(self):
+        """Trailing punctuation stripped when enabled."""
+        assert score_exact_match(
+            "Mount Everest.", {"answer": "Mount Everest"}, "$", "$.answer",
+            strip_punctuation=True
+        ) is True
+    
+    def test_strip_punctuation_period(self):
+        """Strips trailing period."""
+        assert score_exact_match(
+            "hello.", {"answer": "hello"}, "$", "$.answer", strip_punctuation=True
+        ) is True
+    
+    def test_strip_punctuation_exclamation(self):
+        """Strips trailing exclamation mark."""
+        assert score_exact_match(
+            "hello!", {"answer": "hello"}, "$", "$.answer", strip_punctuation=True
+        ) is True
+    
+    def test_strip_punctuation_question(self):
+        """Strips trailing question mark."""
+        assert score_exact_match(
+            "hello?", {"answer": "hello"}, "$", "$.answer", strip_punctuation=True
+        ) is True
+    
+    def test_strip_punctuation_multiple(self):
+        """Strips multiple trailing punctuation marks."""
+        assert score_exact_match(
+            "hello...", {"answer": "hello"}, "$", "$.answer", strip_punctuation=True
+        ) is True
+    
+    def test_strip_punctuation_preserves_internal(self):
+        """Does not strip internal punctuation."""
+        assert score_exact_match(
+            "hello, world!", {"answer": "hello, world"}, "$", "$.answer",
+            strip_punctuation=True
+        ) is True
+    
     # --- Integration with benchmark case structure ---
     
     def test_typical_qa_case(self):

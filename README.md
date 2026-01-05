@@ -83,6 +83,7 @@ scoring:
         normalize:
           lowercase: true
           strip_whitespace: true
+          strip_punctuation: true    # Remove trailing punctuation (.!?,;:)
   primary_metric: exact_match
 
 reporting:
@@ -102,10 +103,17 @@ reporting:
 | `output_json_path` | Where the answer is in the HTTP response |
 | `ref_path` | Where the expected answer is in `reference` |
 
-Then update `run.py`:
+Then update these files:
 
+**`run.py`** – point to your benchmark:
 ```python
 BENCHMARK = "benchmarks/my_benchmark/benchmark.yaml"
+```
+
+**`proxies/system_prompt.txt`** – tailor the prompt for your task:
+```
+You are an assistant answering trivia questions.
+Reply with ONLY the answer, no explanation.
 ```
 
 ---

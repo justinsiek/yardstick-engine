@@ -1,5 +1,5 @@
-id: addition_qa_v1
-name: Addition QA Benchmark
+id: trivia_qa
+name: Trivia QA Benchmark
 version: 1
 
 dataset:

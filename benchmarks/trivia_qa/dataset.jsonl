@@ -1,0 +1,10 @@
+{"id": "trivia_001", "input": {"question": "What is the capital of France?"}, "reference": {"answer": "Paris"}}
+{"id": "trivia_002", "input": {"question": "Who painted the Mona Lisa?"}, "reference": {"answer": "Leonardo da Vinci"}}
+{"id": "trivia_003", "input": {"question": "What is the largest planet in our solar system?"}, "reference": {"answer": "Jupiter"}}
+{"id": "trivia_004", "input": {"question": "In what year did World War II end?"}, "reference": {"answer": "1945"}}
+{"id": "trivia_005", "input": {"question": "What is the chemical symbol for gold?"}, "reference": {"answer": "Au"}}
+{"id": "trivia_006", "input": {"question": "Who wrote Romeo and Juliet?"}, "reference": {"answer": "William Shakespeare"}}
+{"id": "trivia_007", "input": {"question": "What is the tallest mountain in the world?"}, "reference": {"answer": "Mount Everest"}}
+{"id": "trivia_008", "input": {"question": "What is the largest ocean on Earth?"}, "reference": {"answer": "Pacific Ocean"}}
+{"id": "trivia_009", "input": {"question": "Who was the first person to walk on the moon?"}, "reference": {"answer": "Neil Armstrong"}}
+{"id": "trivia_010", "input": {"question": "What is the smallest country in the world?"}, "reference": {"answer": "Vatican City"}}
