@@ -1,0 +1,10 @@
+{"id": "add_001", "input": {"question": "What is 2 + 2?"}, "reference": {"answer": "4"}}
+{"id": "add_002", "input": {"question": "What is 10 + 5?"}, "reference": {"answer": "15"}}
+{"id": "add_003", "input": {"question": "What is 0 + 0?"}, "reference": {"answer": "0"}}
+{"id": "add_004", "input": {"question": "What is 100 + 200?"}, "reference": {"answer": "300"}}
+{"id": "add_005", "input": {"question": "What is 7 + 8?"}, "reference": {"answer": "15"}}
+{"id": "add_006", "input": {"question": "What is 25 + 25?"}, "reference": {"answer": "50"}}
+{"id": "add_007", "input": {"question": "What is 1 + 1?"}, "reference": {"answer": "2"}}
+{"id": "add_008", "input": {"question": "What is 99 + 1?"}, "reference": {"answer": "100"}}
+{"id": "add_009", "input": {"question": "What is 50 + 50?"}, "reference": {"answer": "100"}}
+{"id": "add_010", "input": {"question": "What is 13 + 7?"}, "reference": {"answer": "20"}}

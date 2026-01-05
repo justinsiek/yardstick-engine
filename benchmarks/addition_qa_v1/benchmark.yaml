@@ -1,0 +1,36 @@
+id: addition_qa_v1
+name: Addition QA Benchmark
+version: 1
+
+dataset:
+  path: dataset.jsonl
+
+contract:
+  protocol: http
+
+  request:
+    method: POST
+    body_json_path: "$.input"
+
+  response:
+    output_json_path: "$.answer"
+
+scoring:
+  metrics:
+    - name: exact_match
+      type: exact_match
+      args:
+        pred_path: "$"
+        ref_path: "$.answer"
+        normalize:
+          lowercase: true
+          strip_whitespace: true
+
+  primary_metric: exact_match
+
+reporting:
+  aggregate:
+    - name: exact_match_rate
+      type: mean
+      metric: exact_match
+
