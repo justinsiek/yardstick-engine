@@ -20,6 +20,10 @@ from engine.dataset import (
     load_dataset_jsonl,
     DatasetLoadError,
 )
+from engine.jsonpath import (
+    eval_jsonpath,
+    JSONPathError,
+)
 
 __all__ = [
     "__version__",
@@ -31,5 +35,8 @@ __all__ = [
     "Case",
     "load_dataset_jsonl",
     "DatasetLoadError",
+    # JSONPath
+    "eval_jsonpath",
+    "JSONPathError",
 ]
 
