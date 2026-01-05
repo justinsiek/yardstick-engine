@@ -15,7 +15,9 @@ import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
-import httpx
+# Import proxies (add parent to path for direct script execution)
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from proxies.proxies import openai_proxy, groq_proxy
 
 
 # === CONFIGURATION ===
@@ -25,7 +27,7 @@ MODELS = [
     # OpenAI
     {"provider": "openai", "model": "gpt-4o-mini", "port": 8001},
     
-    # Groq (free)
+    # Groq (free, 8B minimum)
     {"provider": "groq", "model": "llama-3.1-8b-instant", "port": 8002},
 ]
 
@@ -34,6 +36,12 @@ SYSTEM_PROMPT_FILE = Path(__file__).parent / "system_prompt.txt"
 
 
 # === IMPLEMENTATION ===
+
+# Proxy registry - maps provider name to module
+PROXIES = {
+    "openai": openai_proxy,
+    "groq": groq_proxy,
+}
 
 # Load .env file
 env_file = Path(__file__).parent.parent / ".env"
@@ -51,46 +59,11 @@ else:
     SYSTEM_PROMPT = "You are a helpful assistant. Reply with ONLY the answer, no explanation."
     print(f"Warning: {SYSTEM_PROMPT_FILE} not found, using default prompt")
 
-# API endpoints
-PROVIDERS = {
-    "openai": {
-        "url": "https://api.openai.com/v1/chat/completions",
-        "key_env": "OPENAI_API_KEY",
-    },
-    "groq": {
-        "url": "https://api.groq.com/openai/v1/chat/completions",
-        "key_env": "GROQ_API_KEY",
-    },
-}
-
 
 def call_llm(provider: str, model: str, prompt: str) -> str:
     """Call an LLM provider and return the response text."""
-    config = PROVIDERS[provider]
-    api_key = os.environ.get(config["key_env"])
-    
-    if not api_key:
-        raise Exception(f"{config['key_env']} not set in .env")
-    
-    response = httpx.post(
-        config["url"],
-        headers={"Authorization": f"Bearer {api_key}"},
-        json={
-            "model": model,
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": prompt},
-            ],
-            "max_tokens": 100,
-            "temperature": 0,
-        },
-        timeout=60.0,
-    )
-    
-    if response.status_code != 200:
-        raise Exception(f"{provider} API error {response.status_code}: {response.text}")
-    
-    return response.json()["choices"][0]["message"]["content"].strip()
+    proxy_module = PROXIES[provider]
+    return proxy_module.call(model, prompt, SYSTEM_PROMPT)
 
 
 def make_handler(provider: str, model: str):
@@ -130,15 +103,13 @@ def run_server(provider: str, model: str, port: int):
 def check_api_keys():
     """Check that required API keys are set."""
     providers_needed = set(m["provider"] for m in MODELS)
-    missing = []
     
     for provider in providers_needed:
-        key_env = PROVIDERS[provider]["key_env"]
-        if not os.environ.get(key_env):
-            missing.append(key_env)
-    
-    if missing:
-        sys.exit(f"Error: Missing API keys in .env: {', '.join(missing)}")
+        proxy_module = PROXIES[provider]
+        try:
+            proxy_module.get_api_key()
+        except ValueError as e:
+            sys.exit(f"Error: {e}")
 
 
 def check_port_conflicts():
@@ -172,4 +143,3 @@ if __name__ == "__main__":
     # Run the last server in the main thread (blocks)
     last = MODELS[-1]
     run_server(last["provider"], last["model"], last["port"])
-
