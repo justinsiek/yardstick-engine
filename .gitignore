@@ -1,0 +1,40 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# Yardstick run outputs
+runs/
+*_results.json
+results.json
+
+# Demo scripts (not production code)
+demo_*.py
+
+# Environment files with secrets
+.env

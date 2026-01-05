@@ -19,8 +19,8 @@ from pathlib import Path
 
 import httpx
 
-# Load .env file if it exists
-env_file = Path(__file__).parent / ".env"
+# Load .env file from engine root (parent of proxies/)
+env_file = Path(__file__).parent.parent / ".env"
 if env_file.exists():
     for line in env_file.read_text().splitlines():
         line = line.strip()
@@ -82,8 +82,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8001)
     parser.add_argument("--model", default="gpt-4o-mini")
-    parser.add_argument("--system-prompt", default="system_prompt.txt",
-                        help="Path to system prompt file (default: system_prompt.txt)")
+    # Default to system_prompt.txt in the same directory as this script
+    default_prompt = Path(__file__).parent / "system_prompt.txt"
+    parser.add_argument("--system-prompt", default=str(default_prompt),
+                        help="Path to system prompt file")
     args = parser.parse_args()
 
     if not os.environ.get("OPENAI_API_KEY"):

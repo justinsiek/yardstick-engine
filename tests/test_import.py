@@ -8,13 +8,6 @@ def test_import_engine():
     assert engine.__version__ == "0.1.0"
 
 
-def test_import_cli():
-    """Verify the CLI module can be imported."""
-    from engine import cli
-    
-    assert callable(cli.main)
-
-
 def test_import_spec_module():
     """Verify the spec module can be imported."""
     from engine import spec

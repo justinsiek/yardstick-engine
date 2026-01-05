@@ -32,9 +32,6 @@ dev = [
     "pytest-httpx>=0.30",
 ]
 
-[project.scripts]
-yardstick = "engine.cli:main"
-
 [tool.hatch.build.targets.wheel]
 packages = ["engine"]
 

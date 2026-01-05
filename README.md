@@ -16,10 +16,7 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ```python
-from engine.spec import load_spec
-from engine.dataset import load_dataset_jsonl
-from engine.eval import run_benchmark
-from engine.systems import SystemConfig
+from engine import load_spec, load_dataset_jsonl, run_benchmark, SystemConfig
 
 # Load benchmark
 spec = load_spec("benchmarks/addition_qa_v1/benchmark.yaml")
@@ -34,17 +31,7 @@ systems = [
 result = run_benchmark(spec, cases, systems)
 ```
 
-## CLI Usage
-
-```bash
-# Validate a benchmark spec
-yardstick validate benchmarks/addition_qa_v1/benchmark.yaml
-
-# Run a benchmark
-yardstick run benchmarks/addition_qa_v1/benchmark.yaml \
-  --system my_system=http://localhost:8000/solve \
-  --out results.json
-```
+See `run.py` for a complete example.
 
 ## Development
 
