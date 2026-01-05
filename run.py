@@ -16,7 +16,7 @@ BENCHMARK = "benchmarks/trivia_qa/benchmark.yaml"
 # Systems to test (name -> endpoint)
 SYSTEMS = [
     SystemConfig(name="openai-gpt-4o-mini", endpoint="http://localhost:8001/solve"),
-    SystemConfig(name="openai-gpt-4o", endpoint="http://localhost:8002/solve"),
+    SystemConfig(name="groq-llama-3.1-8b-instant", endpoint="http://localhost:8002/solve"),
 ]
 
 # Output file (optional)

@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
-OpenAI proxy server for benchmarking.
+Groq proxy server for benchmarking open-source models.
+
+Free tier, OpenAI-compatible API, super fast inference.
+Sign up at: https://console.groq.com
 
 Edit the CONFIGURATION section below, then run:
-    python proxies/openai_proxy.py
+    python proxies/groq_proxy.py
 """
 
 import json
@@ -18,11 +21,11 @@ import httpx
 
 # === CONFIGURATION ===
 
-# Models to serve (each gets its own port)
 MODELS = [
-    {"name": "gpt-4o-mini", "port": 8001},
-    # {"name": "gpt-4o", "port": 8002},
-    # {"name": "gpt-3.5-turbo", "port": 8003},
+    {"name": "llama-3.1-8b-instant", "port": 8002},
+    # {"name": "llama-3.2-1b-preview", "port": 8003},
+    # {"name": "llama-3.1-70b-versatile", "port": 8004},
+
 ]
 
 # System prompt file (shared across providers)
@@ -40,6 +43,11 @@ if env_file.exists():
             key, value = line.split("=", 1)
             os.environ.setdefault(key.strip(), value.strip())
 
+# Get API key from environment
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    sys.exit("Error: GROQ_API_KEY not found in .env file. Get a free key at https://console.groq.com")
+
 # Load system prompt
 if SYSTEM_PROMPT_FILE.exists():
     SYSTEM_PROMPT = SYSTEM_PROMPT_FILE.read_text().strip()
@@ -48,11 +56,11 @@ else:
     print(f"Warning: {SYSTEM_PROMPT_FILE} not found, using default prompt")
 
 
-def call_openai(prompt: str, model: str) -> str:
-    """Call OpenAI and return the response text."""
+def call_groq(prompt: str, model: str) -> str:
+    """Call Groq API and return the response text."""
     response = httpx.post(
-        "https://api.openai.com/v1/chat/completions",
-        headers={"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
+        "https://api.groq.com/openai/v1/chat/completions",
+        headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
         json={
             "model": model,
             "messages": [
@@ -64,7 +72,9 @@ def call_openai(prompt: str, model: str) -> str:
         },
         timeout=60.0,
     )
-    response.raise_for_status()
+    if response.status_code != 200:
+        error_detail = response.text
+        raise Exception(f"Groq API error {response.status_code}: {error_detail}")
     return response.json()["choices"][0]["message"]["content"].strip()
 
 
@@ -83,7 +93,7 @@ def make_handler(model_name: str):
             prompt = data.get("question") or data.get("prompt", "")
 
             try:
-                answer = call_openai(prompt, self.model)
+                answer = call_groq(prompt, self.model)
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
@@ -106,13 +116,10 @@ def run_server(model_name: str, port: int):
 
 
 if __name__ == "__main__":
-    if not os.environ.get("OPENAI_API_KEY"):
-        sys.exit("Error: OPENAI_API_KEY not set. Create a .env file with OPENAI_API_KEY=sk-...")
-
     if not MODELS:
-        sys.exit("Error: No models configured. Edit MODELS in openai_proxy.py")
+        sys.exit("Error: No models configured. Edit MODELS in groq_proxy.py")
 
-    print("OpenAI proxy servers:")
+    print("Groq proxy servers:")
     
     # Start all but the last server in background threads
     for config in MODELS[:-1]:
@@ -126,3 +133,4 @@ if __name__ == "__main__":
     # Run the last server in the main thread (blocks)
     last = MODELS[-1]
     run_server(last["name"], last["port"])
+
