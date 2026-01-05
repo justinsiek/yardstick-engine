@@ -26,7 +26,7 @@ from proxies.proxies import openai_proxy, groq_proxy, google_proxy
 MODELS = [
     # OpenAI
     {"provider": "openai", "model": "gpt-4o-mini", "port": 8001},
-    
+    {"provider": "openai", "model": "gpt-4o", "port": 8004},
     # Groq (free, 8B minimum)
     {"provider": "groq", "model": "llama-3.1-8b-instant", "port": 8002},
     

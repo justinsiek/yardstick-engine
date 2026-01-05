@@ -1,5 +1,5 @@
-id: trivia_qa
-name: Trivia QA Benchmark
+id: hard_reasoning
+name: Hard Reasoning Benchmark
 version: 1
 
 dataset:
@@ -34,4 +34,3 @@ reporting:
     - name: exact_match_rate
       type: mean
       metric: exact_match
-
