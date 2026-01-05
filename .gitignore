@@ -33,8 +33,5 @@ runs/
 *_results.json
 results.json
 
-# Demo scripts (not production code)
-demo_*.py
-
 # Environment files with secrets
 .env

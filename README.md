@@ -1,45 +1,54 @@
 # Yardstick Engine
 
-Local-first execution core for running custom benchmarks.
-
-## Overview
-
-The Yardstick OSS Engine is a local-first execution core for running custom benchmarks defined as portable YAML/JSON specs against one or more black-box systems via HTTP, producing deterministic scores and structured results.
-
-## Installation
-
-```bash
-# Development install
-pip install -e ".[dev]"
-```
+Local-first benchmark execution core for evaluating systems via HTTP.
 
 ## Quick Start
 
-```python
-from engine import load_spec, load_dataset_jsonl, run_benchmark, SystemConfig
+**1. Install**
 
-# Load benchmark
-spec = load_spec("benchmarks/addition_qa_v1/benchmark.yaml")
-cases = load_dataset_jsonl("benchmarks/addition_qa_v1/dataset.jsonl")
-
-# Define systems to evaluate
-systems = [
-    SystemConfig(name="my_system", endpoint="http://localhost:8000/solve"),
-]
-
-# Run benchmark
-result = run_benchmark(spec, cases, systems)
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -e ".[dev]"
 ```
 
-See `run.py` for a complete example.
+**2. Start the demo server** (Terminal 1)
+
+```bash
+python demo_server.py
+```
+
+**3. Run the benchmark** (Terminal 2)
+
+```bash
+python run.py
+```
+
+That's it! You'll see results like:
+
+```
+Benchmark: Addition QA (v1)
+Dataset: 10 cases
+
+demo: 100.0% (0 errors)
+
+Results saved to results.json
+```
+
+## Using Your Own System
+
+Edit `run.py` to point to your endpoint:
+
+```python
+SYSTEMS = [
+    SystemConfig(name="my_system", endpoint="http://localhost:8000/solve"),
+]
+```
+
+Your endpoint should accept POST requests with JSON body `{"input": {...}}` and return `{"answer": "..."}`.
 
 ## Development
 
 ```bash
-# Install dev dependencies
-pip install -e ".[dev]"
-
-# Run tests
-pytest
+pytest  # Run tests
 ```
-
