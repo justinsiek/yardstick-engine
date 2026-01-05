@@ -16,10 +16,10 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ```python
-from yardstick_engine.spec import load_spec
-from yardstick_engine.dataset import load_dataset_jsonl
-from yardstick_engine.eval import run_benchmark
-from yardstick_engine.systems import SystemConfig
+from engine.spec import load_spec
+from engine.dataset import load_dataset_jsonl
+from engine.eval import run_benchmark
+from engine.systems import SystemConfig
 
 # Load benchmark
 spec = load_spec("benchmarks/addition_qa_v1/benchmark.yaml")

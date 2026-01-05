@@ -33,10 +33,10 @@ dev = [
 ]
 
 [project.scripts]
-yardstick = "yardstick_engine.cli:main"
+yardstick = "engine.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["yardstick_engine"]
+packages = ["engine"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
