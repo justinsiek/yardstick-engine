@@ -11,7 +11,7 @@ def get_api_key() -> str:
     key = os.environ.get("GROQ_API_KEY")
     if not key:
         raise ValueError("GROQ_API_KEY not set in .env")
-    return key
+    return key.strip()  # Remove any trailing newlines from .env
 
 
 def call(model: str, prompt: str, system_prompt: str) -> str:

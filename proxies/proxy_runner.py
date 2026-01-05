@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Import proxies (add parent to path for direct script execution)
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from proxies.proxies import openai_proxy, groq_proxy
+from proxies.proxies import openai_proxy, groq_proxy, google_proxy
 
 
 # === CONFIGURATION ===
@@ -29,6 +29,9 @@ MODELS = [
     
     # Groq (free, 8B minimum)
     {"provider": "groq", "model": "llama-3.1-8b-instant", "port": 8002},
+    
+    # Google Gemma (free tier: 30 RPM for gemma-3 models)
+    {"provider": "google", "model": "gemma-3-1b-it", "port": 8003},
 ]
 
 # System prompt file (shared across all providers)
@@ -41,6 +44,7 @@ SYSTEM_PROMPT_FILE = Path(__file__).parent / "system_prompt.txt"
 PROXIES = {
     "openai": openai_proxy,
     "groq": groq_proxy,
+    "google": google_proxy,
 }
 
 # Load .env file
@@ -85,7 +89,13 @@ def make_handler(provider: str, model: str):
                 self.end_headers()
                 self.wfile.write(json.dumps({"answer": answer}).encode())
             except Exception as e:
-                self.send_error(500, str(e))
+                # Sanitize error message - newlines break HTTP headers
+                error_msg = str(e).replace("\n", " ").replace("\r", " ")[:200]
+                print(f"[{provider}/{model}] Error: {e}")
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": error_msg}).encode())
 
         def log_message(self, fmt, *args):
             print(f"[{provider}/{model}] {args[0]}")

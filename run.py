@@ -15,7 +15,7 @@ BENCHMARK = "benchmarks/trivia_qa/benchmark.yaml"
 
 # Systems to test (name -> endpoint)
 SYSTEMS = [
-    SystemConfig(name="huggingface-qwen-2.5-0.5b-instruct", endpoint="http://localhost:8003/solve"),
+    SystemConfig(name="google-gemma-3-1b", endpoint="http://localhost:8003/solve"),
 ]
 
 # Output file (optional)
