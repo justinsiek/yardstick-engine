@@ -125,12 +125,15 @@ def _run_system(
     # Aggregate: compute mean of metric values
     aggregate_value = aggregate_mean(metric_values)
     
+    # Sort error_counts for deterministic output
+    sorted_error_counts = dict(sorted(error_counter.items()))
+    
     return SystemResult(
         system_name=system.name,
         primary_metric=metric_name,
         aggregates={aggregate_config.name: aggregate_value},
         case_results=case_results,
-        error_counts=dict(error_counter),
+        error_counts=sorted_error_counts,
     )
 
 
